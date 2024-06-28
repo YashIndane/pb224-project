@@ -1,49 +1,10 @@
 #!/usr/bin/python3
 
 from dataclasses import dataclass, field
-from typing import Optional, List, Any
-import RPi.GPIO as GPIO
+from typing import Optional, List
+from digitalpin import DigitalPin
+from pb224_utilities import Hex
 import time
-
-
-@dataclass(kw_only=True)
-class Hex:
-    hexString: str
-
-    def hex_to_bin(self) -> str:
-        scale = 16
-        bit_length = 4 * (len(self.hexString) - 2)
-        bin_data = bin(int(self.hexString, scale))[2:].zfill(bit_length)
-        return bin_data
-
-    def hex_to_dec(self) -> int:
-        scale = 16
-        dec_num = int(self.hexString, scale)
-        return dec_num
-
-    def bit_size(self) -> int:
-        return 4 * (len(self.hexString) - 2)
-
-
-@dataclass(kw_only=True)
-class DigitalPin:
-    pinNo: int
-    mode: Any
-    initialValue: Optional[int]=field(
-        default=0
-    )
-
-    def trigger(self, transition: Optional[str]="1", time_period: Optional[int]=0.05) -> None:
-        GPIO.output(self.pinNo, transition=="1")
-        time.sleep(time_period)
-        GPIO.output(self.pinNo, transition!="1")
-
-    def set_value(self, value: int) -> None:
-        GPIO.output(self.pinNo, value)
-
-    # Sets the pin initial config
-    def __post_init__(self) -> None:
-        GPIO.setup(self.pinNo, self.mode, initial=self.initialValue)
 
 
 @dataclass(kw_only=True)
