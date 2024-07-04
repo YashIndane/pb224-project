@@ -28,10 +28,10 @@ class RAM_Interface:
         LD, R_CLK, SER_DATA = self.R_Pins
 
         # RI disabled
-        RI.set_value(0)
+        #RI.set_value(0)
 
         # Set address
-        self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
+        #self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
 
         time.sleep(0.05)
 
@@ -41,15 +41,15 @@ class RAM_Interface:
         time.sleep(0.05)
 
         # Shifting out and reading 3 bytes of data
-        data_bin_string = ""
+        data_bin_string = "0b"
 
-        for i in range(23):
-            data_bin_string += "1" if GPIO.input(SER_DATA) else "0"
+        data_bin_string += "1" if SER_DATA.read_value() else "0"
+
+        for j in range(23):
             R_CLK.trigger(transition=1)
             time.sleep(0.05)
-
-        # Reverse the binary string
-        data_bin_string = data_bin_string[::-1]
+            data_bin_string += "1" if SER_DATA.read_value() else "0"
+            time.sleep(0.05)
 
         return bin_to_hex(data_bin_string)
 

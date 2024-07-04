@@ -24,9 +24,13 @@ class DigitalPin:
         GPIO.output(self.pinNo, value)
 
 
+    def read_value(self) -> bool:
+        return GPIO.input(self.pinNo)
+
+
     # Sets the pin initial config
     def __post_init__(self) -> None:
         if self.mode == GPIO.OUT:
             GPIO.setup(self.pinNo, self.mode, initial=self.initialValue)
         else:
-            pass
+            GPIO.setup(self.pinNo, self.mode)
