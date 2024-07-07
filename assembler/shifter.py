@@ -32,4 +32,4 @@ class Shifter:
 
         time.sleep(self.shifterDelay)
         RCLK.trigger(transition="1")
-        SER.set_value(0)
+        SER.set_value(value=0)

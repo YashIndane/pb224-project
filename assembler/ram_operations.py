@@ -5,15 +5,14 @@ from typing import List
 from pb224_utilities import Hex, bin_to_hex
 from digitalpin import DigitalPin
 from shifter import Shifter
-import RPi.GPIO as GPIO
 import threading
 import time
 
 
 @dataclass(kw_only=True)
 class RAM_Interface:
-    R_Pins: List[DigitalPin]  #(read_ld, clk, serial_out)
-    W_Pins: List[DigitalPin]  #(RI, RI_clk)
+    R_Pins: List[DigitalPin]  # (read_ld, clk, serial_out)
+    W_Pins: List[DigitalPin]  # (RI, RI_clk)
     addr_shifter: Shifter
     data_shifter: Shifter
 
@@ -28,15 +27,15 @@ class RAM_Interface:
         LD, R_CLK, SER_DATA = self.R_Pins
 
         # RI disabled
-        #RI.set_value(0)
+        # RI.set_value(value=0)
 
         # Set address
-        #self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
+        # self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
 
         time.sleep(0.05)
 
         # Latch the RAM data in 74HC165
-        LD.trigger(transition=0)
+        LD.trigger(transition="0")
 
         time.sleep(0.05)
 
@@ -46,7 +45,7 @@ class RAM_Interface:
         data_bin_string += "1" if SER_DATA.read_value() else "0"
 
         for j in range(23):
-            R_CLK.trigger(transition=1)
+            R_CLK.trigger(transition="1")
             time.sleep(0.05)
             data_bin_string += "1" if SER_DATA.read_value() else "0"
             time.sleep(0.05)
@@ -85,11 +84,11 @@ class RAM_Interface:
 
         # Writing
         time.sleep(0.05)
-        RI.set_value(1)
+        RI.set_value(value=1)
         time.sleep(0.05)
         RI_CLK.trigger(transition="1")
         time.sleep(0.05)
-        RI.set_value(0)
+        RI.set_value(value=0)
         time.sleep(0.05)
 
         print("data written")

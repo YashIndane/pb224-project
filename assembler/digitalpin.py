@@ -14,7 +14,7 @@ class DigitalPin:
         default=0
     )
 
-    def trigger(self, transition: Optional[str]="1", time_period: Optional[int]=0.1) -> None:
+    def trigger(self, transition: Optional[str]="1", time_period: Optional[int]=0.05) -> None:
         GPIO.output(self.pinNo, transition=="1")
         time.sleep(time_period)
         GPIO.output(self.pinNo, transition!="1")

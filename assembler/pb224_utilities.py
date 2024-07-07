@@ -54,4 +54,3 @@ class Hex:
     def bit_size(self) -> int:
         """ Example bit_length('0xc10') returns 12 """
         return 4 * (len(self.hexString) - 2)
-
