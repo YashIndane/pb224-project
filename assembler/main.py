@@ -16,29 +16,29 @@ if __name__ == "__main__":
     # addr, data = addrdata.split(":")
 
     DATA_SER   = DigitalPin(pinNo=23, mode=GPIO.OUT, initialValue=0)
-    DATA_SRCLK = DigitalPin(pinNo=18, mode=GPIO.OUT, initialValue=0)
+    DATA_SRCLK = DigitalPin(pinNo=24, mode=GPIO.OUT, initialValue=0)
     DATA_RCLK  = DigitalPin(pinNo=15, mode=GPIO.OUT, initialValue=0)
-    DATA_SRCLR = DigitalPin(pinNo=14, mode=GPIO.OUT, initialValue=1)
+    DATA_SRCLR = DigitalPin(pinNo=16, mode=GPIO.OUT, initialValue=1)
 
     data_shifter = Shifter(shifterDigitalPins=[DATA_SER, DATA_SRCLK, DATA_RCLK, DATA_SRCLR], shifterDelay=0.05)
-    # data_shifter.clear_register()
+    data_shifter.clear_register()
 
-    ADDR_SER   = DigitalPin(pinNo=26, mode=GPIO.OUT, initialValue=0)
-    ADDR_SRCLK = DigitalPin(pinNo=22, mode=GPIO.OUT, initialValue=0)
-    ADDR_RCLK  = DigitalPin(pinNo=19, mode=GPIO.OUT, initialValue=0)
-    ADDR_SRCLR = DigitalPin(pinNo=6, mode=GPIO.OUT, initialValue=1)
+    ADDR_SER   = DigitalPin(pinNo=17, mode=GPIO.OUT, initialValue=0)
+    ADDR_SRCLK = DigitalPin(pinNo=27, mode=GPIO.OUT, initialValue=0)
+    ADDR_RCLK  = DigitalPin(pinNo=22, mode=GPIO.OUT, initialValue=0)
+    ADDR_SRCLR = DigitalPin(pinNo=5, mode=GPIO.OUT, initialValue=1)
 
     address_shifter = Shifter(shifterDigitalPins=[ADDR_SER, ADDR_SRCLK, ADDR_RCLK, ADDR_SRCLR], shifterDelay=0.05)
-    # address_shifter.clear_register()
+    address_shifter.clear_register()
 
     # RAM write pins
-    RI     = DigitalPin(pinNo=1, mode=GPIO.OUT, initialValue=0)
-    RI_CLK = DigitalPin(pinNo=12, mode=GPIO.OUT, initialValue=0)
+    RI     = DigitalPin(pinNo=6, mode=GPIO.OUT, initialValue=0)
+    RI_CLK = DigitalPin(pinNo=26, mode=GPIO.OUT, initialValue=0)
 
     # RAM Read pins
-    LATCH       = DigitalPin(pinNo=11, mode=GPIO.OUT, initialValue=1)
+    LATCH       = DigitalPin(pinNo=13, mode=GPIO.OUT, initialValue=1)
     SHIFT_CLK   = DigitalPin(pinNo=4, mode=GPIO.OUT, initialValue=0)
-    SER_DATA_IN = DigitalPin(pinNo=9, mode=GPIO.IN)
+    SER_DATA_IN = DigitalPin(pinNo=12, mode=GPIO.IN)
 
     ram_OP = ram_operations.RAM_Interface(
         R_Pins=[LATCH, SHIFT_CLK, SER_DATA_IN],
@@ -47,12 +47,18 @@ if __name__ == "__main__":
         data_shifter=data_shifter
     )
 
-    # ram_OP.write_single_address(hex_address="0xc90f", hex_data="0xc6f100")
-    # time.sleep(0.05)
-    # ram_OP.write_single_address(hex_address="0x9f00", hex_data="0xa9fe11")
-    # time.sleep(0.05)
-    # ram_OP.write_single_address(hex_address="0x9cce", hex_data="0x12bcde")
-    print(ram_OP.read_single_address(hex_address="0x8966"))
+    #ram_OP.write_single_address(hex_address="0x0009", hex_data="0x000094")
+    #time.sleep(0.05)
+    #ram_OP.write_single_address(hex_address="0x0008", hex_data="0x000019")
+    #time.sleep(0.05)
+    #ram_OP.write_single_address(hex_address="0x0007", hex_data="0x0000ad")
+
+    #time.sleep(0.05)
+    #print(ram_OP.read_single_address(hex_address="0x0009"))
+    #time.sleep(0.05)
+    #print(ram_OP.read_single_address(hex_address="0x0008"))
+    #time.sleep(0.05)
+    #print(ram_OP.read_single_address(hex_address="0x0007"))
 
     # Clear registers
     # data_shifter.clear_register()

@@ -23,14 +23,18 @@ class RAM_Interface:
         Example return data: '0x3400aa'
         """
 
-        RI = self.W_Pins[0]
+        RI, RI_CLK = self.W_Pins
         LD, R_CLK, SER_DATA = self.R_Pins
 
         # RI disabled
-        # RI.set_value(value=0)
+        RI.set_value(value=0)
+
+        # RI_CLK disabled
+        #RI_CLK.set_value(value=0)
+
 
         # Set address
-        # self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
+        self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
 
         time.sleep(0.05)
 
