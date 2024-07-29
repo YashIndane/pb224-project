@@ -47,21 +47,29 @@ if __name__ == "__main__":
         data_shifter=data_shifter
     )
 
-    #ram_OP.write_single_address(hex_address="0x0009", hex_data="0x000094")
+    #ram_OP.write_single_address(hex_address="0x0006", hex_data="0x939393")
     #time.sleep(0.05)
-    #ram_OP.write_single_address(hex_address="0x0008", hex_data="0x000019")
+    #ram_OP.write_single_address(hex_address="0x0007", hex_data="0x19ac76")
     #time.sleep(0.05)
-    #ram_OP.write_single_address(hex_address="0x0007", hex_data="0x0000ad")
+    #ram_OP.write_single_address(hex_address="0x0008", hex_data="0xc7bbb2")
+    #time.sleep(0.05)
+    #ram_OP.write_single_address(hex_address="0x0009", hex_data="0x743aaa")
+    #time.sleep(0.05)
+    #ram_OP.write_single_address(hex_address="0x000a", hex_data="0x0092a1")
 
     #time.sleep(0.05)
-    #print(ram_OP.read_single_address(hex_address="0x0009"))
+    #print(ram_OP.read_single_address(hex_address="0x0001"))
     #time.sleep(0.05)
-    #print(ram_OP.read_single_address(hex_address="0x0008"))
+    #print(ram_OP.read_single_address(hex_address="0x0002"))
     #time.sleep(0.05)
-    #print(ram_OP.read_single_address(hex_address="0x0007"))
+    #print(ram_OP.read_single_address(hex_address="0x0003"))
+    #time.sleep(0.05)
+    #print(ram_OP.read_single_address(hex_address="0x0004"))
+    #time.sleep(0.05)
+    #print(ram_OP.read_single_address(hex_address="0x0004"))
 
     # Clear registers
-    # data_shifter.clear_register()
-    # address_shifter.clear_register()
+    data_shifter.clear_register()
+    address_shifter.clear_register()
 
     GPIO.cleanup()
