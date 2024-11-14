@@ -96,3 +96,11 @@ class RAM_Interface:
         time.sleep(0.05)
 
         print("data written")
+
+
+    def clear_addr_reg(self) -> None:
+        self.addr_shifter.clear_register()
+
+
+    def clear_data_reg(self) -> None:
+        self.data_shifter.clear_register()

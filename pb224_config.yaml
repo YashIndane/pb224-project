@@ -1,0 +1,101 @@
+---
+
+#pb-224 assembler config
+
+version: v1
+assembler: pb-224
+metadata:
+    author: Yash Indane
+    email: yashindane46@gmail.com
+    license: MIT
+
+
+#The pins are for RPI Zero 2W
+#Pins are based on BCM mode
+
+config:
+    profiles:
+        - sipoShifterProfiles:
+            - dataShifterProfile:
+                shifterDevice: &74hc595_device
+                    name: !!str 74595
+                    family: hc
+
+                pins:
+                    - dataSER: &data_shifter_pin
+                        pin: 23
+                        input: false
+                        initValue: 0
+
+                    - dataSRCLK:
+                        <<: *data_shifter_pin
+                        pin: 24
+
+                    - dataRCLK:
+                        <<: *data_shifter_pin
+                        pin: 15
+
+                    - dataSRCLR:
+                        <<: *data_shifter_pin
+                        pin: 16
+                        initValue: 1
+
+
+            - addressShifterProfile:
+                shifterDevice: *74hc595_device
+
+                pins:
+                    - addressSER: &address_shifter_pin
+                        pin: 17
+                        input: false
+                        initValue: 0
+
+                    - addressSRCLK:
+                        <<: *address_shifter_pin
+                        pin: 27
+
+                    - addressRCLK:
+                        <<: *address_shifter_pin
+                        pin: 22
+
+                    - addressSRCLR:
+                        <<: *address_shifter_pin
+                        pin: 5
+                        initValue: 1
+
+
+        - pisoShifterProfiles:
+            - ramSerialReaderProfile:
+                shifterDevice:
+                    name: !!str 74165
+                    family: hc
+
+                pins:
+                    - shifterLatch:
+                        pin: 13
+                        input: false
+                        initValue: 1
+
+                    - shiftCLK:
+                        pin: 4
+                        input: false
+                        initValue: 0
+
+                    - serialDataIn:
+                        pin: 12
+                        input: true
+
+
+        - otherProfiles:
+            - ramWriteProfile:
+                pins:
+                    - ramIn: &ram_write_pin
+                        pin: 6
+                        input: false
+                        initValue: 0
+
+                    - ramInCLK:
+                        <<: *ram_write_pin
+                        pin: 26
+
+...             
