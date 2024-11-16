@@ -30,7 +30,7 @@ class RAM_Interface:
         RI.set_value(value=0)
 
         # RI_CLK disabled
-        #RI_CLK.set_value(value=0)
+        # RI_CLK.set_value(value=0)
 
 
         # Set address
