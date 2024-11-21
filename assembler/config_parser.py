@@ -9,6 +9,12 @@ import yaml
 
 
 def parse_config(conf_file: str) -> ram_operations.RAM_Interface:
+    """
+    Parses the pb224 config file and returns back the ram operations object.
+
+    :param config_file: The path of pb224 config yaml file (type string).
+    :return: ram operations object (type ram_operations.RAM_Interface).
+    """
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
