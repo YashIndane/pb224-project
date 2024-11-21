@@ -133,4 +133,4 @@ class RAM_Interface:
         :return: Representation of RAM_Interface class instance (type string).
         """
 
-        return (f'{self.__class__.__name__}(R_Pins={self.R_Pins}, W_Pins={self.W_Pins}, addr_shifter={self.addr_shifter}, data_shifter={data_shifter})')
+        return (f'{self.__class__.__name__}(R_Pins={self.R_Pins}, W_Pins={self.W_Pins}, addr_shifter={self.addr_shifter}, data_shifter={self.data_shifter})')
