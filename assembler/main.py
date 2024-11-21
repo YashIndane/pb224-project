@@ -11,6 +11,8 @@ if __name__ == "__main__":
     path = Path(__file__).parent / "../pb224_config.yaml"
     ram_OP = config_parser.parse_config(conf_file=path)
 
+    print(ram_OP)
+
     ram_OP.write_single_address(hex_address="0x1968", hex_data="0x37cca2")
     time.sleep(0.05)
     ram_OP.write_single_address(hex_address="0x1974", hex_data="0xc28155")

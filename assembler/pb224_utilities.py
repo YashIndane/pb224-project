@@ -4,7 +4,14 @@ from dataclasses import dataclass
 
 
 def bin_to_hex(bin_data: str) -> str:
-    """ Example bin_to_hex('0b101000011111') returns '0xa1f' """
+    """
+    Converts binary to hexadecimal.
+    Example bin_to_hex('0b101000011111') returns '0xa1f'.
+
+    :param bin_data: Binary string (type string).
+    :return: Hexadecimal representation (type string).
+    """
+
     scale = 2
     length = (len(bin_data) - 2) // 4
     hex_data = "0x" + hex(int(bin_data, scale))[2:].zfill(length)
@@ -18,7 +25,13 @@ class Hex:
 
 
     def hex_to_bin(self) -> str:
-        """ Example hex_to_bin('0x02') returns '0b00000010' """
+        """
+        Converts hexadecimal to binary.
+        Example hex_to_bin('0x02') returns '0b00000010'.
+
+        :return: Binary representation (type string).
+        """
+
         scale = 16
         bit_length = 4 * (len(self.hexString) - 2)
         bin_data = "0b" + bin(int(self.hexString, scale))[2:].zfill(bit_length)
@@ -26,14 +39,26 @@ class Hex:
 
 
     def hex_to_dec(self) -> int:
-        """ Example hex_to_dec('0x9e') returns 158 """
+        """
+        Converts hexadecimal to decimal.
+        Example hex_to_dec('0x9e') returns 158.
+
+        :return: Decimal representation (type integer).
+        """
+
         scale = 16
         dec_num = int(self.hexString, scale)
         return dec_num
 
 
     def compute_checksum(self) -> str:
-        """ Example compute_checksum('0x03000000020023') returns '0xd8' """
+        """
+        Computes the intel hex checksum value for data integrity verification.
+        Example compute_checksum('0x03000000020023') returns '0xd8'.
+
+        :return: Checksum value in hexadecimal (type string).
+        """
+
         record = self.hexString[2:]
 
         half_record_len = len(record) // 2
@@ -52,5 +77,20 @@ class Hex:
 
 
     def bit_size(self) -> int:
-        """ Example bit_length('0xc10') returns 12 """
+        """
+        Calculates bit length.
+        Example bit_length('0xc10') returns 12.
+
+        :return: Bit length (type integer).
+        """
+
         return 4 * (len(self.hexString) - 2)
+
+    def __repr__(self) -> str:
+        """
+        Returns representation of instance of Hex data class.
+
+        :return: Representation of Hex data class instance (type string).
+        """
+
+        return (f'{self.__class__.__name__}(hexString={self.hexString})')

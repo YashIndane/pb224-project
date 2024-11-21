@@ -19,8 +19,12 @@ class RAM_Interface:
 
     def read_single_address(self, hex_address: str) -> str:
         """
+        Read single address from RAM.
         Example hex_address: '0x3e01'
-        Example return data: '0x3400aa'
+        Example return data: '0x340024'
+
+        :param hex_address: Hexadecimal representation of address (type string).
+        :return: Data from RAM (type string).
         """
 
         RI, RI_CLK = self.W_Pins
@@ -59,8 +63,13 @@ class RAM_Interface:
 
     def write_single_address(self, hex_address: str, hex_data: str) -> None:
         """
+        Write data to a address.
         Example hex_address: '0x3e01'
         Example hex_data: '0x3400aa'
+
+        :param hex_address: Hex representation of address where data is to be written (type string).
+        :param hex_data: Hex representation of data to be written (type string).
+        :return: None.
         """
 
         RI, RI_CLK = self.W_Pins
@@ -99,8 +108,29 @@ class RAM_Interface:
 
 
     def clear_addr_reg(self) -> None:
+        """
+        Clears the address shifter.
+
+        :return: None.
+        """
+
         self.addr_shifter.clear_register()
 
 
     def clear_data_reg(self) -> None:
+        """
+        Clears the data shifter.
+
+        :return: None.
+        """
+
         self.data_shifter.clear_register()
+
+    def __repr__(self) -> str:
+        """
+        Returns representation of instance of RAM_Interface data class.
+
+        :return: Representation of RAM_Interface class instance (type string).
+        """
+
+        return (f'{self.__class__.__name__}(R_Pins={self.R_Pins}, W_Pins={self.W_Pins}, addr_shifter={self.addr_shifter}, data_shifter={self.data_shifter})')
