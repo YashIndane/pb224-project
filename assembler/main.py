@@ -2,17 +2,30 @@
 
 import RPi.GPIO as GPIO
 import config_parser
+import ihexfile_parser
 from pathlib import Path
 import time
 
 
 if __name__ == "__main__":
-
-    path = Path(__file__).parent / "../pb224_config.yaml"
-    ram_OP = config_parser.parse_config(conf_file=path)
-
+ 
+    # Parse pb224 config file
+    config_file_path = Path(__file__).parent / "../pb224_config.yaml"
+    ram_OP = config_parser.parse_config(conf_file=config_file_path)
     print(ram_OP)
 
+    # Parse ihex file
+    ihex_file_path = Path(__file__).parent / "../ihexfile.hex"
+    hex_record_list = ihexfile_parser.parse_intel_hexfile(filename=ihex_file_path)
+
+    # Dump intel hex file
+    address_checksum_mappings = ram_OP.dump_intel_hexfile(record_list=hex_record_list)
+    print(address_checksum_mappings)
+
+    # Checksum Verification for above intel hex file after dump
+    ram_OP.verify_checksum(addr_checksum_mappings=address_checksum_mappings, byte_count="0x03", record_type="0x00")
+
+    time.sleep(0.05)
     ram_OP.write_single_address(hex_address="0x1968", hex_data="0x37cca2")
     time.sleep(0.05)
     ram_OP.write_single_address(hex_address="0x1974", hex_data="0xc28155")
@@ -24,13 +37,13 @@ if __name__ == "__main__":
     ram_OP.write_single_address(hex_address="0x1618", hex_data="0xf62011")
 
     time.sleep(0.05)
-    print(ram_OP.read_single_address(hex_address="0x1968"))
+    print(ram_OP.read_single_address(hex_address="0x0015"))
     time.sleep(0.05)
-    print(ram_OP.read_single_address(hex_address="0x1974"))
+    print(ram_OP.read_single_address(hex_address="0x0016"))
     time.sleep(0.05)
-    print(ram_OP.read_single_address(hex_address="0x1999"))
+    print(ram_OP.read_single_address(hex_address="0x0017"))
     time.sleep(0.05)
-    print(ram_OP.read_single_address(hex_address="0x2006"))
+    print(ram_OP.read_single_address(hex_address="0x0018"))
     time.sleep(0.05)
     print(ram_OP.read_single_address(hex_address="0x1618"))
 
