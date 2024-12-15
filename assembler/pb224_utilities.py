@@ -19,6 +19,15 @@ def bin_to_hex(bin_data: str) -> str:
 
 
 def dec_to_hex(dec: int) -> str:
+    """
+    Converts the decimal value to Hex representation
+    Example dec: 5
+    Example return: '0x0005'
+
+    :param dec: Decimal value (type int).
+    :return: Hex representation of the decimal value (type string).
+    """
+
     hex_data = "0x" + hex(dec)[2:].zfill(4)
     return hex_data
 

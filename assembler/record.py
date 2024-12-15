@@ -65,4 +65,3 @@ class HexRecord:
         """
 
         return (f'{self.__class__.__name__}(record_string={self.record_string})')
-

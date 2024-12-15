@@ -12,6 +12,15 @@ import time
 
 
 def get_lower_addr(l_addr: str) -> str:
+    """
+    Computes the lower margin address for bulk reading.
+    Example l_addr: '0x0002'.
+    Example return address: '0x0000'
+
+    :param l_addr: Hexadecimal representation of address (type string).
+    :return: lower margin address (type string).
+    """
+
     dec_rep_lower = Hex(hexString=l_addr).hex_to_dec()
     if dec_rep_lower % 8 == 0:
         return l_addr
@@ -23,6 +32,15 @@ def get_lower_addr(l_addr: str) -> str:
 
 
 def get_higher_addr(h_addr: str) -> str:
+    """
+    Computes the higher margin address for bulk reading.
+    Example h_addr: '0x0006'
+    Example return address: '0x0007'
+
+    :param h_addr: Hexadecimaml representation of address (type string).
+    :return: higher margin address (type string).
+    """
+
     dec_rep_higher = Hex(hexString=h_addr).hex_to_dec()
     while True:
         dec_rep_higher += 1
@@ -31,6 +49,16 @@ def get_higher_addr(h_addr: str) -> str:
 
 
 def get_addr_range(start_addr: str, end_addr: str) -> tuple:
+    """
+    Computes the address space for given addresses.
+    Example start_addr: '0x0001'
+    Example end_addr: '0x0005'
+
+    :param start_addr: Hexadecimal representation of desired start address (type string).
+    :param end_addr: Hexadecimal representation of desired end address (type string).
+    return: tuple containing lower and upper address margins (type tuple)
+    """
+
     return (get_lower_addr(start_addr), get_higher_addr(end_addr))
 
 
@@ -190,6 +218,14 @@ class RAM_Interface:
 
 
     def color_inrange(self, counter: int, des_range: range):
+        """
+        Colors the string in red.
+
+        :param counter: An integer value (type int).
+        :param des_range: An range object (type range).
+        :return: Colored data value from RAM if the corresponding address in desired address space.
+        """
+
         hex_addr = dec_to_hex(counter)
         data = self.read_single_address(hex_address=hex_addr)
         return colored(data, "red") if counter in des_range else data

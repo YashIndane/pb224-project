@@ -26,15 +26,15 @@ if __name__ == "__main__":
     #ram_OP.verify_checksum(addr_checksum_mappings=address_checksum_mappings, byte_count="0x03", record_type="0x00")
 
     time.sleep(0.05)
-    ram_OP.write_single_address(hex_address="0x1968", hex_data="0x37cca2")
+    ram_OP.write_single_address(hex_address="0x1003", hex_data="0x37cca2")
     time.sleep(0.05)
-    ram_OP.write_single_address(hex_address="0x1969", hex_data="0xc28155")
+    ram_OP.write_single_address(hex_address="0x1004", hex_data="0xc28155")
     time.sleep(0.05)
-    ram_OP.write_single_address(hex_address="0x196a", hex_data="0xe80065")
+    ram_OP.write_single_address(hex_address="0x1005", hex_data="0xe80065")
     time.sleep(0.05)
-    ram_OP.write_single_address(hex_address="0x196b", hex_data="0xa1b9d3")
+    ram_OP.write_single_address(hex_address="0x1006", hex_data="0xa1b9d3")
     time.sleep(0.05)
-    ram_OP.write_single_address(hex_address="0x196c", hex_data="0xf62011")
+    ram_OP.write_single_address(hex_address="0x1007", hex_data="0xf62011")
 
     #time.sleep(0.05)
     #print(ram_OP.read_single_address(hex_address="0x0015"))
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     #time.sleep(0.05)
     #print(ram_OP.read_single_address(hex_address="0x1618"))
 
-    print(ram_OP.bulk_read(lower_addr="0x1968", upper_addr="0x196c"))
+    print(ram_OP.bulk_read(lower_addr="0x1001", upper_addr="0x1007"))
 
     ram_OP.clear_addr_reg()
     ram_OP.clear_data_reg()
