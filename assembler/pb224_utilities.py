@@ -18,6 +18,11 @@ def bin_to_hex(bin_data: str) -> str:
     return hex_data
 
 
+def dec_to_hex(dec: int) -> str:
+    hex_data = "0x" + hex(dec)[2:].zfill(4)
+    return hex_data
+
+
 @dataclass(kw_only=True)
 class Hex:
     """ Example hexString property = 0x8c11 """

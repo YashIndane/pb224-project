@@ -2,12 +2,36 @@
 
 from dataclasses import dataclass
 from typing import List, Dict
-from pb224_utilities import Hex, bin_to_hex
+from pb224_utilities import Hex, bin_to_hex, dec_to_hex
 from digitalpin import DigitalPin
 from shifter import Shifter
 from record import HexRecord
+from termcolor import colored
 import threading
 import time
+
+
+def get_lower_addr(l_addr: str) -> str:
+    dec_rep_lower = Hex(hexString=l_addr).hex_to_dec()
+    if dec_rep_lower % 8 == 0:
+        return l_addr
+    else:
+        while True:
+            dec_rep_lower -= 1
+            if dec_rep_lower % 8 == 0:
+                return dec_to_hex(dec_rep_lower)
+
+
+def get_higher_addr(h_addr: str) -> str:
+    dec_rep_higher = Hex(hexString=h_addr).hex_to_dec()
+    while True:
+        dec_rep_higher += 1
+        if dec_rep_higher % 8 == 0:
+            return dec_to_hex(dec_rep_higher - 1)
+
+
+def get_addr_range(start_addr: str, end_addr: str) -> tuple:
+    return (get_lower_addr(start_addr), get_higher_addr(end_addr))
 
 
 @dataclass(kw_only=True)
@@ -132,6 +156,43 @@ class RAM_Interface:
             time.sleep(0.05)
 
         return address_checksum_mappings
+
+
+    def bulk_read(self, lower_addr: str, upper_addr: str) -> str:
+        """
+        Prints the RAM/Memory contents in formatted manner for given address range.
+        Example lower_addr: '0x0001'
+        Example upper_addr: '0x000a'
+
+        :param lower_addr: The starting address value in hex (type string).
+        :param upper_addr: The end address value in hex (type string).
+        :return: Returns a string representating RAM/Memory contents in formatted manner (type string)
+        """
+
+        desired_range = range(Hex(hexString=lower_addr).hex_to_dec(), Hex(hexString=upper_addr).hex_to_dec() + 1)
+
+        l, u = get_addr_range(lower_addr, upper_addr)
+        # print(l, u)
+        l_dec = Hex(hexString=l).hex_to_dec()
+        u_dec = Hex(hexString=u).hex_to_dec()
+
+        out_string = l[2:] + " " + self.color_inrange(l_dec, desired_range) + " "
+        l_dec += 1
+
+        while l_dec <= u_dec:
+            if l_dec % 8 == 0:
+                out_string += "\n" + dec_to_hex(l_dec)[2:] + " " + self.color_inrange(l_dec, desired_range) + " "
+            else:
+                out_string += self.color_inrange(l_dec, desired_range) + " "
+            l_dec += 1
+
+        return out_string
+
+
+    def color_inrange(self, counter: int, des_range: range):
+        hex_addr = dec_to_hex(counter)
+        data = self.read_single_address(hex_address=hex_addr)
+        return colored(data, "red") if counter in des_range else data
 
 
     def verify_checksum(self, addr_checksum_mappings: Dict[str, str], byte_count: str, record_type: str) -> None:
