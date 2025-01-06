@@ -119,7 +119,7 @@ def parse_config(conf_file: str) -> ram_operations.RAM_Interface:
         W_Pins=[RW_RI, RW_RICLK],
         addr_shifter=address_shifter,
         data_shifter=data_shifter,
-        checksum_notifier = CHE_BLI
+        checksum_notifier=CHE_BLI
 
     )
 
