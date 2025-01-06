@@ -98,4 +98,11 @@ config:
                         <<: *ram_write_pin
                         pin: 26
 
+            - checkSumBlinker:
+                pins:
+                    - notify:
+                        pin: 14
+                        input: false
+                        initValue: 0
+
 ...             
