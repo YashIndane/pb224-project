@@ -68,6 +68,7 @@ class RAM_Interface:
     W_Pins: List[DigitalPin]  # (RI, RI_clk)
     addr_shifter: Shifter
     data_shifter: Shifter
+    checksum_notifier: DigitalPin
 
 
     def read_single_address(self, hex_address: str) -> str:
@@ -256,7 +257,15 @@ class RAM_Interface:
             else:
                 print(f"Checksum verification failed for address: {addr}")
 
-        print(all(checksum_verified_status))
+        if all(checksum_verified_status):
+            self.checksum_notifier.set_value(1)
+            time.sleep(0.5)
+            self.checksum_notifier.set_value(0)
+            time.sleep(0.5)
+            self.checksum_notifier.set_value(1)
+            time.sleep(0.5)
+            self.checksum_notifier.set_value(0)
+            time.sleep(0.5)
 
 
 

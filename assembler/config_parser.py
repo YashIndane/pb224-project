@@ -105,13 +105,21 @@ def parse_config(conf_file: str) -> ram_operations.RAM_Interface:
     rw_riclk_pin, rw_riclk_mode, rw_riclk_initval = ram_write_profile_pins[1]["ramInCLK"].values()
     RW_RICLK = DigitalPin(pinNo=rw_riclk_pin, mode=GPIO.IN if rw_riclk_mode else GPIO.OUT, initialValue=rw_riclk_initval)
 
+    # Checksum Blinker
+    checksum_blinker_profile = configs["config"]["profiles"][2]["otherProfiles"][1]["checkSumBlinker"]["pins"]
+
+    # CHE_BLI
+    ch_pin, ch_mode, ch_initval = checksum_blinker_profile[0]["notify"].values()
+    CHE_BLI = DigitalPin(pinNo=ch_pin, mode=GPIO.IN if ch_mode else GPIO.OUT, initialValue=ch_initval)
+
 
     # RAM Operations Object
     ram_OP = ram_operations.RAM_Interface(
         R_Pins=[RR_LATCH, RR_SHIFTCLK, RR_SER_DATAIN],
         W_Pins=[RW_RI, RW_RICLK],
         addr_shifter=address_shifter,
-        data_shifter=data_shifter
+        data_shifter=data_shifter,
+        checksum_notifier = CHE_BLI
 
     )
 
