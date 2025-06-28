@@ -23,7 +23,11 @@ if __name__ == "__main__":
     print(address_checksum_mappings)
 
     # Checksum Verification for above intel hex file after dump
-    ram_OP.verify_checksum(addr_checksum_mappings=address_checksum_mappings, byte_count="0x03", record_type="0x00")
+    checksum_status_log = ram_OP.verify_checksum(addr_checksum_mappings=address_checksum_mappings, 
+                                                 byte_count="0x03", 
+                                                 record_type="0x00"
+                          )
+    print(checksum_status_log)
 
     #time.sleep(0.05)
     #ram_OP.write_single_address(hex_address="0x1003", hex_data="0x37cca2")
@@ -47,7 +51,8 @@ if __name__ == "__main__":
     #time.sleep(0.05)
     #print(ram_OP.read_single_address(hex_address="0x1618"))
 
-    #print(ram_OP.bulk_read(lower_addr="0x1001", upper_addr="0x1007"))
+    bulk_read_log = ram_OP.bulk_read(lower_addr="0x0015", upper_addr="0x0019")
+    print(bulk_read_log)
 
     ram_OP.clear_addr_reg()
     ram_OP.clear_data_reg()

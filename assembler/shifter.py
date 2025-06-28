@@ -21,8 +21,8 @@ class Shifter:
         :return: None.
         """
 
-        SRCLR = self.shifterDigitalPins[-1]
-        SRCLR.trigger(transition="0")
+        _SRCLR = self.shifterDigitalPins[-1]
+        _SRCLR.trigger(transition="0")
 
     def shift(self, shiftHex: Hex) -> None:
         """
@@ -32,20 +32,20 @@ class Shifter:
         :return: None.
         """
 
-        SER, SRCLK, RCLK = self.shifterDigitalPins[0:3]
-        counter = 0
-        shift_num = shiftHex.hex_to_dec()
+        _SER, _SRCLK, _RCLK = self.shifterDigitalPins[0:3]
+        _counter = 0
+        _shift_num = shiftHex.hex_to_dec()
 
-        while counter < shiftHex.bit_size():
-            SER.set_value(value=shift_num % 2)
+        while _counter < shiftHex.bit_size():
+            _SER.set_value(value=_shift_num % 2)
             time.sleep(self.shifterDelay)
-            SRCLK.trigger(transition="1")
-            shift_num >>= 1
-            counter += 1
+            _SRCLK.trigger(transition="1")
+            _shift_num >>= 1
+            _counter += 1
 
         time.sleep(self.shifterDelay)
-        RCLK.trigger(transition="1")
-        SER.set_value(value=0)
+        _RCLK.trigger(transition="1")
+        _SER.set_value(value=0)
 
     def __repr__(self) -> str:
         """

@@ -4,7 +4,7 @@ from record import HexRecord
 from typing import List
 
 
-def parse_intel_hexfile(filename: str) -> List[HexRecord]:
+def parse_intel_hexfile(*, filename: str) -> List[HexRecord]:
     """
     Parse the given ihex file.
 
@@ -12,17 +12,17 @@ def parse_intel_hexfile(filename: str) -> List[HexRecord]:
     :return: Returns list of HexRecord objects (type List[HexRecord]).
     """
 
-    dump_hex_records = []
+    _dump_hex_records = []
 
-    with open(file=filename, mode="r") as ihexfile:
-        data = ihexfile.read()
-        for record in data.split("\n"):
-            dump_hex_records.append(
-                HexRecord(record)
+    with open(file=filename, mode="r") as _ihexfile:
+        _data = _ihexfile.read()
+        for _record in _data.split("\n"):
+            _dump_hex_records.append(
+                HexRecord(_record)
             )
-        ihexfile.close()
+        _ihexfile.close()
 
     # Remove last element from list
-    dump_hex_records.pop()
+    _dump_hex_records.pop()
 
-    return dump_hex_records
+    return _dump_hex_records
