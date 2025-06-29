@@ -16,18 +16,20 @@ def checksum_status_pbar(func):
     """
     Status bar decorator for checksum verification.
     """
+
     def wrapper(otherSelf, **kwargs) -> str:
         _addr_check_mappings = kwargs["addr_checksum_mappings"]
         _byte_c = kwargs["byte_count"]
         _record_type = kwargs["record_type"]
 
         with tqdm(total=len(_addr_check_mappings), desc="Checksum Verification Status") as _pbar:
-            _checksum_status_log = func(self=otherSelf,
-                                        addr_checksum_mappings=_addr_check_mappings,
-                                        byte_count=_byte_c,
-                                        record_type=_record_type,
-                                        progress_bar=_pbar
-                                   )
+            _checksum_status_log = func(
+                self=otherSelf,
+                addr_checksum_mappings=_addr_check_mappings,
+                byte_count=_byte_c,
+                record_type=_record_type,
+                progress_bar=_pbar
+            )
         return _checksum_status_log
     return wrapper
 
@@ -36,16 +38,24 @@ def bulk_read_status_pbar(func):
     """
     Status bar decorator for RAM Bulk Reading.
     """
+
     def wrapper(otherSelf, **kwargs) -> str:
         _l_addr = kwargs["lower_addr"]
         _u_addr = kwargs["upper_addr"]
-        _l, _u = RAM_Interface.get_addr_range(start_addr=_l_addr, end_addr=_u_addr)
-        with tqdm(total=(Hex(hexString=_u).hex_to_dec() - Hex(hexString=_l).hex_to_dec() + 1), desc="Bulk Read Status") as _pbar:
-            _bulk_read_status_log = func(self=otherSelf,
-                                         lower_addr=_l_addr,
-                                         upper_addr=_u_addr,
-                                         progress_bar=_pbar
-                                    )
+        _l, _u = RAM_Interface.get_addr_range(
+            start_addr=_l_addr, end_addr=_u_addr
+        )
+
+        with tqdm(
+            total=(Hex(hexString=_u).hex_to_dec() - Hex(hexString=_l).hex_to_dec() + 1), 
+            desc="Bulk Read Status") as _pbar:
+
+            _bulk_read_status_log = func(
+                self=otherSelf,
+                lower_addr=_l_addr,
+                upper_addr=_u_addr,
+                progress_bar=_pbar
+            )
         return _bulk_read_status_log
     return wrapper
 
@@ -54,13 +64,15 @@ def dump_intel_hexfile_pbar(func):
     """
     Status bar decorator for Intel Hex File Dump.
     """
+
     def wrapper(otherSelf, **kwargs):
         _record_list = kwargs["record_list"]
         with tqdm(total=len(_record_list), desc="Dumping Intel Hex File") as _pbar:
-            _dump_log = func(self=otherSelf,
-                             record_list=_record_list,
-                             progress_bar=_pbar
-                        )
+            _dump_log = func(
+                self=otherSelf,
+                record_list=_record_list,
+                progress_bar=_pbar
+            )
         return _dump_log
     return wrapper
 
@@ -127,7 +139,10 @@ class RAM_Interface:
 
         """
 
-        return (RAM_Interface.get_lower_addr(l_addr=start_addr), RAM_Interface.get_higher_addr(h_addr=end_addr))
+        return (
+            RAM_Interface.get_lower_addr(l_addr=start_addr), 
+            RAM_Interface.get_higher_addr(h_addr=end_addr)
+        )
 
 
 
@@ -194,7 +209,6 @@ class RAM_Interface:
             kwargs={
                 'shiftHex': Hex(hexString=hex_address)
             }
-
         )
 
         _data_shifter_thread = threading.Thread(
@@ -262,7 +276,9 @@ class RAM_Interface:
         :return: Returns a string representating RAM/Memory contents in formatted manner (type string)
         """
 
-        _desired_range = range(Hex(hexString=lower_addr).hex_to_dec(), Hex(hexString=upper_addr).hex_to_dec() + 1)
+        _desired_range = range(
+            Hex(hexString=lower_addr).hex_to_dec(), Hex(hexString=upper_addr).hex_to_dec() + 1
+        )
 
         _l, _u = RAM_Interface.get_addr_range(start_addr=lower_addr, end_addr=upper_addr)
         # print(l, u)
@@ -274,7 +290,8 @@ class RAM_Interface:
 
         while _l_dec <= _u_dec:
             if _l_dec % 8 == 0:
-                _out_string += "\n" + dec_to_hex(_l_dec)[2:] + " " + self.color_inrange(_l_dec, _desired_range) + " "
+                _out_string += "\n" + dec_to_hex(_l_dec)[2:] + " " \
+                    + self.color_inrange(_l_dec, _desired_range) + " "
             else:
                 _out_string += self.color_inrange(_l_dec, _desired_range) + " "
             _l_dec += 1
@@ -299,7 +316,13 @@ class RAM_Interface:
 
 
     @checksum_status_pbar
-    def verify_checksum(self, addr_checksum_mappings: Dict[str, str], byte_count: str, record_type: str, progress_bar=None) -> None:
+    def verify_checksum(
+        self,
+        addr_checksum_mappings: Dict[str, str],
+        byte_count: str,
+        record_type: str,
+        progress_bar=None
+    ) -> None:
         """
         Verifies the checksum for addresses passed.
 
@@ -314,7 +337,8 @@ class RAM_Interface:
 
         for _addr, _checksum in addr_checksum_mappings.items():
             _data = self.read_single_address(hex_address=_addr)
-            _read_record_without_checksum_string = "0x" + byte_count[2:] + _addr[2:] + record_type[2:] + _data[2:]
+            _read_record_without_checksum_string = "0x" + byte_count[2:] + _addr[2:] \
+                + record_type[2:] + _data[2:]
             _read_record_checksum = Hex(hexString=_read_record_without_checksum_string).compute_checksum()
 
             _checksum_verified = _checksum == _read_record_checksum

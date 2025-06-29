@@ -23,10 +23,11 @@ if __name__ == "__main__":
     print(address_checksum_mappings)
 
     # Checksum Verification for above intel hex file after dump
-    checksum_status_log = ram_OP.verify_checksum(addr_checksum_mappings=address_checksum_mappings, 
-                                                 byte_count="0x03", 
-                                                 record_type="0x00"
-                          )
+    checksum_status_log = ram_OP.verify_checksum(
+        addr_checksum_mappings=address_checksum_mappings, 
+        byte_count="0x03", 
+        record_type="0x00"
+    )
     print(checksum_status_log)
 
     #time.sleep(0.05)
