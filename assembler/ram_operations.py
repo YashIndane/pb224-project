@@ -287,6 +287,7 @@ class RAM_Interface:
 
         _out_string = _l[2:] + " " + self.color_inrange(_l_dec, _desired_range) + " "
         _l_dec += 1
+        progress_bar.update(1)
 
         while _l_dec <= _u_dec:
             if _l_dec % 8 == 0:
