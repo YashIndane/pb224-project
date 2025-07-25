@@ -15,7 +15,7 @@ class DigitalPin:
     )
 
 
-    def trigger(self, transition: Optional[str]="1", time_period: Optional[int]=0.05) -> None:
+    def trigger(self, *, transition: Optional[str]="1", time_period: Optional[int]=.05) -> None:
         """Pulses a pin according to transition.
 
         :param transition: 1 for high to low and 0 for vice versa (type string).
@@ -28,7 +28,7 @@ class DigitalPin:
         GPIO.output(self.pinNo, transition!="1")
 
 
-    def set_value(self, value: int) -> None:
+    def set_value(self, *, value: int) -> None:
         """Sets the pin to high or low.
 
         :param value: 0 for low, 1 for high (type integer).

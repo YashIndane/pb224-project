@@ -32,7 +32,7 @@ def dec_to_hex(*, dec: int) -> str:
 
 @dataclass(kw_only=True)
 class Hex:
-    """ Example hexString property = 0x8c11 """
+    """Example hexString property = 0x8c11"""
     hexString: str
 
 

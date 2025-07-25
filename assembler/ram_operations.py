@@ -4,6 +4,7 @@
 from typing import (
     List,
     Dict,
+    Tuple,
     Union,
     ContextManager,
     Callable,
@@ -132,7 +133,7 @@ class RAM_Interface:
 
 
     @staticmethod
-    def _get_addr_range(*, start_addr: str, end_addr: str) -> tuple:
+    def _get_addr_range(*, start_addr: str, end_addr: str) -> Tuple[str, str]:
         """Computes the address space for given addresses.
         Example start_addr: '0x0001'
         Example end_addr: '0x0005'
@@ -170,12 +171,12 @@ class RAM_Interface:
         # Set address
         self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
 
-        time.sleep(0.05)
+        time.sleep(.05)
 
         # Latch the RAM data in 74HC165
         LD.trigger(transition="0")
 
-        time.sleep(0.05)
+        time.sleep(.05)
 
         # Shifting out and reading 3 bytes of data
         data_bin_string = "0b"
@@ -184,9 +185,9 @@ class RAM_Interface:
 
         for _ in range(23):
             R_CLK.trigger(transition="1")
-            time.sleep(0.05)
+            time.sleep(.05)
             data_bin_string += "1" if SER_DATA.read_value() else "0"
-            time.sleep(0.05)
+            time.sleep(.05)
 
         return bin_to_hex(data_bin_string)
 
@@ -224,13 +225,13 @@ class RAM_Interface:
         data_shifter_thread.join()
 
         # Writing
-        time.sleep(0.05)
+        time.sleep(.05)
         RI.set_value(value=1)
-        time.sleep(0.05)
+        time.sleep(.05)
         RI_CLK.trigger(transition="1")
-        time.sleep(0.05)
+        time.sleep(.05)
         RI.set_value(value=0)
-        time.sleep(0.05)
+        time.sleep(.05)
 
         # print("data written")
 
@@ -261,7 +262,7 @@ class RAM_Interface:
 
             self.write_single_address(hex_address=addr_field, hex_data=data_field)
             address_checksum_mappings[addr_field] = checksum
-            time.sleep(0.05)
+            time.sleep(.05)
 
             progress_bar.update(1)
 
@@ -367,8 +368,8 @@ class RAM_Interface:
         if all(checksum_verified_status):
             # Blink the checksum verification led 4 times
             for x in range(1, 5):
-                self.checksum_notifier.set_value(x % 2)
-                time.sleep(0.5)
+                self.checksum_notifier.set_value(value=x % 2)
+                time.sleep(.5)
 
         return checksum_status_log
 

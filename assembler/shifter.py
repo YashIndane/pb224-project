@@ -11,7 +11,7 @@ import time
 class Shifter:
     shifterDigitalPins: List[DigitalPin]
     shifterDelay: Optional[int]=field(
-        default=0.1
+        default=.1
     )
 
 
