@@ -181,12 +181,12 @@ class RAM_Interface:
         # Shifting out and reading 3 bytes of data
         data_bin_string = "0b"
 
-        data_bin_string += "1" if SER_DATA.read_value() else "0"
+        data_bin_string += ("0", "1")[SER_DATA.read_value()]
 
         for _ in range(23):
             R_CLK.trigger(transition="1")
             time.sleep(.05)
-            data_bin_string += "1" if SER_DATA.read_value() else "0"
+            data_bin_string += ("0", "1")[SER_DATA.read_value()]
             time.sleep(.05)
 
         return bin_to_hex(data_bin_string)
@@ -204,25 +204,33 @@ class RAM_Interface:
 
         RI, RI_CLK = self.W_Pins
 
-        # Shifting address and data
-        address_shifter_thread = threading.Thread(
-            target=self.addr_shifter.shift,
-            kwargs={
-                'shiftHex': Hex(hexString=hex_address)
-            }
-        )
+        # Threads list
+        threads_list: list[
+            threading.Thread, # Address shifter thread
+            threading.Thread  # Data shifter thread
+        ] = []
 
-        data_shifter_thread = threading.Thread(
-            target=self.data_shifter.shift,
-            kwargs={
-                'shiftHex': Hex(hexString=hex_data)
-            }
-        )
+        # Populating threads list
+        for inx in range(2):
+            threads_list.append(threading
+                .Thread(
+                    target=(
+                        self.addr_shifter.shift, self.data_shifter.shift
+                    )[inx],
+                    kwargs={
+                        "shiftHex": Hex(
+                            hexString=(hex_address, hex_data)[inx]
+                        )
+                    },
+                    name=f"{'address_shifter_thread' if not inx
+                        else 'data_shifter_thread'}: {__file__}"
+                )
+            )
 
-        address_shifter_thread.start()
-        data_shifter_thread.start()
-        address_shifter_thread.join()
-        data_shifter_thread.join()
+        # Thread execution for shifting data & address parallelly
+        for c in range(2):
+            for thread in threads_list:
+                thread.start() if not c else thread.join()
 
         # Writing
         time.sleep(.05)
@@ -360,7 +368,7 @@ class RAM_Interface:
             checksum_verified_status.append(checksum_verified)
 
             checksum_status_log += f"Checksum {
-                'verified' if checksum_verified else 'verification failed'
+                ('verification failed', 'verified')[checksum_verified]
             } for address: {addr}\n"
 
             progress_bar.update(1)

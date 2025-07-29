@@ -18,6 +18,8 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
+    mode_selecter = (GPIO.OUT, GPIO.IN)
+
     with open(file=conf_file, mode="r") as config_file:
         configs = yaml.safe_load(config_file)
         config_file.close()
@@ -31,25 +33,25 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     # DATA_SER
     data_ser_pin, data_ser_mode, data_ser_initval = data_shifter_profile_pins[0]["dataSER"].values()
     DATA_SER = DigitalPin(
-        pinNo=data_ser_pin, mode=GPIO.IN if data_ser_mode else GPIO.OUT, initialValue=data_ser_initval
+        pinNo=data_ser_pin, mode=mode_selecter[data_ser_mode], initialValue=data_ser_initval
     )
 
     # DATA_SRCLK
     data_srclk_pin, data_srclk_mode, data_srclk_initval = data_shifter_profile_pins[1]["dataSRCLK"].values()
     DATA_SRCLK = DigitalPin(
-        pinNo=data_srclk_pin, mode=GPIO.IN if data_srclk_mode else GPIO.OUT, initialValue=data_srclk_initval
+        pinNo=data_srclk_pin, mode=mode_selecter[data_srclk_mode], initialValue=data_srclk_initval
     )
 
     # DATA_RCLK
     data_rclk_pin, data_rclk_mode, data_rclk_initval = data_shifter_profile_pins[2]["dataRCLK"].values()
     DATA_RCLK = DigitalPin(
-        pinNo=data_rclk_pin, mode=GPIO.IN if data_rclk_mode else GPIO.OUT, initialValue=data_rclk_initval
+        pinNo=data_rclk_pin, mode=mode_selecter[data_rclk_mode], initialValue=data_rclk_initval
     )
 
     # DATA_SRCLR
     data_srclr_pin, data_srclr_mode, data_srclr_initval = data_shifter_profile_pins[3]["dataSRCLR"].values()
     DATA_SRCLR = DigitalPin(
-        pinNo=data_srclr_pin, mode=GPIO.IN if data_srclr_mode else GPIO.OUT, initialValue=data_srclr_initval
+        pinNo=data_srclr_pin, mode=mode_selecter[data_srclr_mode], initialValue=data_srclr_initval
     )
 
     data_shifter = Shifter(
@@ -68,25 +70,25 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     # ADDR_SER
     addr_ser_pin, addr_ser_mode, addr_ser_initval = addr_shifter_profile_pins[0]["addressSER"].values()
     ADDR_SER = DigitalPin(
-        pinNo=addr_ser_pin, mode=GPIO.IN if addr_ser_mode else GPIO.OUT, initialValue=addr_ser_initval
+        pinNo=addr_ser_pin, mode=mode_selecter[addr_ser_mode], initialValue=addr_ser_initval
     )
 
     # ADDR_SRCLK
     addr_srclk_pin, addr_srclk_mode, addr_srclk_initval = addr_shifter_profile_pins[1]["addressSRCLK"].values()
     ADDR_SRCLK = DigitalPin(
-        pinNo=addr_srclk_pin, mode=GPIO.IN if addr_srclk_mode else GPIO.OUT, initialValue=addr_srclk_initval
+        pinNo=addr_srclk_pin, mode=mode_selecter[addr_srclk_mode], initialValue=addr_srclk_initval
     )
 
     # ADDR_RCLK
     addr_rclk_pin, addr_rclk_mode, addr_rclk_initval = addr_shifter_profile_pins[2]["addressRCLK"].values()
     ADDR_RCLK = DigitalPin(
-        pinNo=addr_rclk_pin, mode=GPIO.IN if addr_rclk_mode else GPIO.OUT, initialValue=addr_rclk_initval
+        pinNo=addr_rclk_pin, mode=mode_selecter[addr_rclk_mode], initialValue=addr_rclk_initval
     )
 
     # ADDR_SRCLR
     addr_srclr_pin, addr_srclr_mode, addr_srclr_initval = addr_shifter_profile_pins[3]["addressSRCLR"].values()
     ADDR_SRCLR = DigitalPin(
-        pinNo=addr_srclr_pin, mode=GPIO.IN if addr_srclr_mode else GPIO.OUT, initialValue=addr_srclr_initval
+        pinNo=addr_srclr_pin, mode=mode_selecter[addr_srclr_mode], initialValue=addr_srclr_initval
     )
 
     address_shifter = Shifter(
@@ -105,19 +107,19 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     # RR_LATCH
     rr_latch_pin, rr_latch_mode, rr_latch_initval = ram_serial_reader_profile_pins[0]["shifterLatch"].values()
     RR_LATCH = DigitalPin(
-        pinNo=rr_latch_pin, mode=GPIO.IN if rr_latch_mode else GPIO.OUT, initialValue=rr_latch_initval
+        pinNo=rr_latch_pin, mode=mode_selecter[rr_latch_mode], initialValue=rr_latch_initval
     )
 
     # RR_SHIFT_CLK
     rr_shiftclk_pin, rr_shiftclk_mode, rr_shiftclk_initval = ram_serial_reader_profile_pins[1]["shiftCLK"].values()
     RR_SHIFTCLK = DigitalPin(
-        pinNo=rr_shiftclk_pin, mode=GPIO.IN if rr_shiftclk_mode else GPIO.OUT, initialValue=rr_shiftclk_initval
+        pinNo=rr_shiftclk_pin, mode=mode_selecter[rr_shiftclk_mode], initialValue=rr_shiftclk_initval
     )
 
     # RR_SER_DATA_IN
     rr_serialin_pin, rr_serialin_mode = ram_serial_reader_profile_pins[2]["serialDataIn"].values()
     RR_SER_DATAIN = DigitalPin(
-        pinNo=rr_serialin_pin, mode=GPIO.IN if rr_serialin_mode else GPIO.OUT
+        pinNo=rr_serialin_pin, mode=mode_selecter[rr_serialin_mode]
     )
 
 
@@ -127,13 +129,13 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     # RW_RI
     rw_ri_pin, rw_ri_mode, rw_ri_initval = ram_write_profile_pins[0]["ramIn"].values()
     RW_RI = DigitalPin(
-        pinNo=rw_ri_pin, mode=GPIO.IN if rw_ri_mode else GPIO.OUT, initialValue=rw_ri_initval
+        pinNo=rw_ri_pin, mode=mode_selecter[rw_ri_mode], initialValue=rw_ri_initval
     )
 
     # RW_RICLK
     rw_riclk_pin, rw_riclk_mode, rw_riclk_initval = ram_write_profile_pins[1]["ramInCLK"].values()
     RW_RICLK = DigitalPin(
-        pinNo=rw_riclk_pin, mode=GPIO.IN if rw_riclk_mode else GPIO.OUT, initialValue=rw_riclk_initval
+        pinNo=rw_riclk_pin, mode=mode_selecter[rw_riclk_mode], initialValue=rw_riclk_initval
     )
 
     # Checksum Blinker
@@ -142,7 +144,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     # CHE_BLI
     ch_pin, ch_mode, ch_initval = checksum_blinker_profile[0]["notify"].values()
     CHE_BLI = DigitalPin(
-        pinNo=ch_pin, mode=GPIO.IN if ch_mode else GPIO.OUT, initialValue=ch_initval
+        pinNo=ch_pin, mode=mode_selecter[ch_mode], initialValue=ch_initval
     )
 
 
