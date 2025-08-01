@@ -28,18 +28,14 @@ def checksum_status_pbar(func) -> Callable[..., str]:
 
     def wrapper(otherSelf, **kwargs) -> str:
         addr_check_mappings = kwargs["addr_checksum_mappings"]
-        byte_c = kwargs["byte_count"]
-        record_type = kwargs["record_type"]
 
         with tqdm(
             total=len(addr_check_mappings), desc="Checksum Verification Status"
         ) as pbar:
+            kwargs["progress_bar"] = pbar
             checksum_status_log = func(
-                self=otherSelf,
-                addr_checksum_mappings=addr_check_mappings,
-                byte_count=byte_c,
-                record_type=record_type,
-                progress_bar=pbar
+                otherSelf,
+                **kwargs
             )
         return checksum_status_log
     return wrapper
@@ -61,11 +57,10 @@ def bulk_read_status_pbar(func) -> Callable[..., str]:
             total=(Hex(hexString=u).hex_to_dec - Hex(hexString=l).hex_to_dec + 1),
             desc="Bulk Read Status"
         ) as pbar:
+            kwargs["progress_bar"] = pbar
             bulk_read_status_log = func(
-                self=otherSelf,
-                lower_addr=l_addr,
-                upper_addr=u_addr,
-                progress_bar=pbar
+                otherSelf,
+                **kwargs
             )
         return bulk_read_status_log
     return wrapper
@@ -77,10 +72,10 @@ def dump_intel_hexfile_pbar(func) -> Callable[..., Dict[str, str]]:
     def wrapper(otherSelf, **kwargs) -> Dict[str, str]:
         record_list = kwargs["record_list"]
         with tqdm(total=len(record_list), desc="Dumping Intel Hex File") as pbar:
+            kwargs["progress_bar"] = pbar
             dump_log = func(
-                self=otherSelf,
-                record_list=record_list,
-                progress_bar=pbar
+                otherSelf,
+                **kwargs
             )
         return dump_log
     return wrapper
