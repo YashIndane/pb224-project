@@ -14,9 +14,9 @@ class DigitalPin:
         default=0
     )
 
-    def trigger(self, transition: Optional[str]="1", time_period: Optional[int]=0.05) -> None:
-        """
-        Pulses a pin according to transition.
+
+    def trigger(self, *, transition: Optional[str]="1", time_period: Optional[int]=.05) -> None:
+        """Pulses a pin according to transition.
 
         :param transition: 1 for high to low and 0 for vice versa (type string).
         :param time_period: Time period of the pulse in secs (type integer).
@@ -27,9 +27,9 @@ class DigitalPin:
         time.sleep(time_period)
         GPIO.output(self.pinNo, transition!="1")
 
-    def set_value(self, value: int) -> None:
-        """
-        Sets the pin to high or low.
+
+    def set_value(self, *, value: int) -> None:
+        """Sets the pin to high or low.
 
         :param value: 0 for low, 1 for high (type integer).
         :return: None.
@@ -37,17 +37,18 @@ class DigitalPin:
 
         GPIO.output(self.pinNo, value)
 
+
     def read_value(self) -> bool:
-        """
-        Reads the value at pin.
+        """Reads the value at pin.
+
         :return: True for 1, False for 0 (type bool).
         """
 
         return GPIO.input(self.pinNo)
 
+
     def __post_init__(self) -> None:
-        """
-        Sets the pin initial configuration.
+        """Sets the pin initial configuration.
 
         :return: None.
         """
@@ -57,9 +58,9 @@ class DigitalPin:
         else:
             GPIO.setup(self.pinNo, self.mode)
 
+
     def __repr__(self) -> str:
-        """
-        Returns representation of a instance of DigitalPin data class.
+        """Returns representation of a instance of DigitalPin data class.
 
         :return: representation of DigitalPin instance (type string).
         """

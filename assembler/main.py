@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 
+from pathlib import Path
 import RPi.GPIO as GPIO
 import config_parser
 import ihexfile_parser
-from pathlib import Path
 import time
+import os
 
 
 if __name__ == "__main__":
- 
+    os.system("python3 --version")
+
     # Parse pb224 config file
     config_file_path = Path(__file__).parent / "../pb224_config.yaml"
     ram_OP = config_parser.parse_config(conf_file=config_file_path)
@@ -24,9 +26,7 @@ if __name__ == "__main__":
 
     # Checksum Verification for above intel hex file after dump
     checksum_status_log = ram_OP.verify_checksum(
-        addr_checksum_mappings=address_checksum_mappings, 
-        byte_count="0x03", 
-        record_type="0x00"
+        addr_checksum_mappings=address_checksum_mappings
     )
     print(checksum_status_log)
 
@@ -50,10 +50,10 @@ if __name__ == "__main__":
     #time.sleep(0.05)
     #print(ram_OP.read_single_address(hex_address="0x1004"))
     #time.sleep(0.05)
-    #print(ram_OP.read_single_address(hex_address="0x1618"))
+    print(ram_OP.read_single_address(hex_address="0x1004"))
 
-    bulk_read_log = ram_OP.bulk_read(lower_addr="0x0015", upper_addr="0x0016")
-    print(bulk_read_log)
+    #bulk_read_log = ram_OP.bulk_read(lower_addr="0x1001", upper_addr="0x100b")
+    #print(bulk_read_log)
 
     ram_OP.clear_addr_reg()
     ram_OP.clear_data_reg()
