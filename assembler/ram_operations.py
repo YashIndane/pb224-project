@@ -107,7 +107,7 @@ class RAM_Interface:
             while True:
                 dec_rep_lower -= 1
                 if dec_rep_lower % 8 == 0:
-                    return dec_to_hex(dec_rep_lower)
+                    return dec_to_hex(dec=dec_rep_lower)
 
 
     @staticmethod
@@ -124,7 +124,7 @@ class RAM_Interface:
         while True:
             dec_rep_higher += 1
             if dec_rep_higher % 8 == 0:
-                return dec_to_hex(dec_rep_higher - 1)
+                return dec_to_hex(dec=dec_rep_higher - 1)
 
 
     @staticmethod
@@ -184,7 +184,7 @@ class RAM_Interface:
             data_bin_string += ("0", "1")[SER_DATA.read_value()]
             time.sleep(.05)
 
-        return bin_to_hex(data_bin_string)
+        return bin_to_hex(bin_data=data_bin_string)
 
 
     def write_single_address(self, *, hex_address: str, hex_data: str) -> None:
@@ -217,8 +217,7 @@ class RAM_Interface:
                             hexString=(hex_address, hex_data)[inx]
                         )
                     },
-                    name=f"{'address_shifter_thread' if not inx
-                        else 'data_shifter_thread'}: {__file__}"
+                    name=f"{'address_shifter_thread' if not inx else 'data_shifter_thread'}: {__file__}"
                 )
             )
 
@@ -298,16 +297,16 @@ class RAM_Interface:
         l_dec = Hex(hexString=l).hex_to_dec
         u_dec = Hex(hexString=u).hex_to_dec
 
-        out_string = l[2:] + " " + self.color_inrange(l_dec, desired_range) + " "
+        out_string = l[2:] + " " + self.color_inrange(counter=l_dec, des_range=desired_range) + " "
         l_dec += 1
         progress_bar.update(1)
 
         while l_dec <= u_dec:
             if l_dec % 8 == 0:
-                out_string += "\n" + dec_to_hex(l_dec)[2:] + " " \
-                    + self.color_inrange(l_dec, desired_range) + " "
+                out_string += "\n" + dec_to_hex(dec=l_dec)[2:] + " " \
+                    + self.color_inrange(counter=l_dec, des_range=desired_range) + " "
             else:
-                out_string += self.color_inrange(l_dec, desired_range) + " "
+                out_string += self.color_inrange(counter=l_dec, des_range=desired_range) + " "
             l_dec += 1
 
             progress_bar.update(1)
@@ -323,7 +322,7 @@ class RAM_Interface:
         :return: Colored data value from RAM if the corresponding address in desired address space.
         """
 
-        hex_addr = dec_to_hex(counter)
+        hex_addr = dec_to_hex(dec=counter)
         data = self.read_single_address(hex_address=hex_addr)
         return colored(data, "red") if counter in des_range else data
 
@@ -362,17 +361,15 @@ class RAM_Interface:
             checksum_verified: bool = checksum == read_record_checksum
             checksum_verified_status.append(checksum_verified)
 
-            checksum_status_log += f"Checksum {
-                ('verification failed', 'verified')[checksum_verified]
-            } for address: {addr}\n"
+            checksum_status_log += f"Checksum {('verification failed', 'verified')[checksum_verified]} for address: {addr}\n"
 
             progress_bar.update(1)
 
         if all(checksum_verified_status):
             # Blink the checksum verification led 4 times
             for x in range(1, 5):
-                self.checksum_notifier.set_value(value=x % 2)
-                time.sleep(.5)
+               self.checksum_notifier.set_value(value=x % 2)
+               time.sleep(.5)
 
         return checksum_status_log
 

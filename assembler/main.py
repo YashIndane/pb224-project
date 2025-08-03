@@ -50,10 +50,10 @@ if __name__ == "__main__":
     #time.sleep(0.05)
     #print(ram_OP.read_single_address(hex_address="0x1004"))
     #time.sleep(0.05)
-    #print(ram_OP.read_single_address(hex_address="0x1618"))
+    print(ram_OP.read_single_address(hex_address="0x1004"))
 
-    bulk_read_log = ram_OP.bulk_read(lower_addr="0x0015", upper_addr="0x0016")
-    print(bulk_read_log)
+    #bulk_read_log = ram_OP.bulk_read(lower_addr="0x1001", upper_addr="0x100b")
+    #print(bulk_read_log)
 
     ram_OP.clear_addr_reg()
     ram_OP.clear_data_reg()

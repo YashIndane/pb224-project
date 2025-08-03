@@ -146,9 +146,14 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     CHE_BLI = DigitalPin(
         pinNo=ch_pin, mode=mode_selecter[ch_mode], initialValue=ch_initval
     )
+    #GPIO.setup(14, GPIO.OUT, initial=0)
+    #GPIO.output(14, 1)
+    #time.sleep(2)
+    #GPIO.output(14, 0)
 
 
     # RAM Operations Object
+
     ram_OP = ram_operations.RAM_Interface(
         R_Pins=[RR_LATCH, RR_SHIFTCLK, RR_SER_DATAIN],
         W_Pins=[RW_RI, RW_RICLK],
