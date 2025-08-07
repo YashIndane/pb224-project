@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
+from src.entities.digitalpin import DigitalPin
+from src.utilities.pb224_utilities import Hex
 from dataclasses import dataclass, field
 from typing import Optional, List
-from digitalpin import DigitalPin
-from pb224_utilities import Hex
+
 import time
 
 

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 
-from shifter import Shifter
-from digitalpin import DigitalPin
-import ram_operations
+from src.entities.shifter import Shifter
+from src.entities.digitalpin import DigitalPin
+from src.ram import ram_operations
+
 import RPi.GPIO as GPIO
 import yaml
 
@@ -146,14 +147,8 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     CHE_BLI = DigitalPin(
         pinNo=ch_pin, mode=mode_selecter[ch_mode], initialValue=ch_initval
     )
-    #GPIO.setup(14, GPIO.OUT, initial=0)
-    #GPIO.output(14, 1)
-    #time.sleep(2)
-    #GPIO.output(14, 0)
 
-
-    # RAM Operations Object
-
+    # Ram Operations Object
     ram_OP = ram_operations.RAM_Interface(
         R_Pins=[RR_LATCH, RR_SHIFTCLK, RR_SER_DATAIN],
         W_Pins=[RW_RI, RW_RICLK],

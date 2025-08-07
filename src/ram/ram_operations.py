@@ -11,11 +11,11 @@ from typing import (
     Optional
 )
 
+from src.utilities.pb224_utilities import Hex, bin_to_hex, dec_to_hex
+from src.entities.digitalpin import DigitalPin
+from src.entities.shifter import Shifter
+from src.utilities.record import HexRecord
 from dataclasses import dataclass
-from pb224_utilities import Hex, bin_to_hex, dec_to_hex
-from digitalpin import DigitalPin
-from shifter import Shifter
-from record import HexRecord
 from termcolor import colored
 from tqdm import tqdm
 

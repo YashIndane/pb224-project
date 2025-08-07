@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from record import HexRecord
+from src.utilities.record import HexRecord
 from typing import List
 
 

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
+from src.parser import ihexfile_parser
+from src.parser import config_parser
 from pathlib import Path
+
 import RPi.GPIO as GPIO
-import config_parser
-import ihexfile_parser
 import time
 import os
 
