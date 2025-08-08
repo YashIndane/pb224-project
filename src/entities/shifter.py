@@ -1,5 +1,12 @@
 #!/usr/bin/python3
 
+""""Module for managing the Shifters
+
+Shifters are basically referring to data & address shifters.
+The Integrated Circuit used is a [74HC595] 8-Bit Shift Register
+with 3-State Outputs, in casacaded mode.
+"""
+
 from src.entities.digitalpin import DigitalPin
 from src.utilities.pb224_utilities import Hex
 from dataclasses import dataclass, field

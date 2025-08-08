@@ -1,11 +1,19 @@
 #!/usr/bin/python3
 
-from dataclasses import dataclass
+from pydantic import BaseModel, field_validator
 
 
-@dataclass
-class HexRecord:
+class HexRecord(BaseModel):
     record_string: str
+
+    # Attribute validations
+    @field_validator("record_string")
+    @classmethod
+    def validate_record_string_attr(cls, value: str) -> str:
+        assert(
+            len(value) == 17 and value[:3] == ":03"
+        ), "`record_string` format wrong."
+        return value
 
 
     @property

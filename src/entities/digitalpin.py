@@ -1,18 +1,48 @@
 #!/usr/bin/python3
 
-from dataclasses import dataclass, field
+"""Module for all DigitalPin management
+
+DigitalPins are the GPIO pins on the Raspberry Pi Zero 2W SBC.
+This module holds all the functionality to manage this pins.
+The pin mode is [GPIO.BCM]
+"""
+
+from pydantic import BaseModel, field_validator
 from typing import Optional, Any
+
 import time
 import RPi.GPIO as GPIO
 
 
-@dataclass(kw_only=True)
-class DigitalPin:
+class DigitalPin(BaseModel):
     pinNo: int
-    mode: Any
-    initialValue: Optional[int]=field(
-        default=0
-    )
+    mode: bool
+    initialValue: Optional[int]=0
+
+    # Attribute validations
+    @field_validator("pinNo")
+    @classmethod
+    def validate_pinNo_attr(cls, value: int) -> int:
+        assert (
+            instance(value, int) and value in range(0, 28)
+        ), "`pinNo` attribute should be a integer value between `0` and `27`, both inclusive."
+        return value
+
+
+    @field_validator("mode")
+    @classmethod
+    def validate_mode_attr(cls, value: bool) -> bool:
+        assert instance(value, bool), "`mode` attribute should be a `boolean`."
+        return value
+
+
+    @field_validator("initialValue")
+    @classmethod
+    def validate_initialValue_attr(cls, value: int) -> int:
+        assert(
+            instance(value, int) and value in range(0, 2)
+        ), "`initialValue` attribute should be a integer value, either `0` or `1`."
+        return value
 
 
     def trigger(self, *, transition: Optional[str]="1", time_period: Optional[int]=.05) -> None:

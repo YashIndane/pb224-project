@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+"""Module to manage the RAM
+
+PB224 RAM consists of 3 [MS62256A-20NC] 32K*8 High Speed CMOS Static RAMs
+which act as the main memory for this CPU.
+"""
 
 from typing import (
     List,

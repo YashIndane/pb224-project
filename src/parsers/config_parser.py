@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+"""Module to parse the pb224 assembler config file""""
 
 from src.entities.shifter import Shifter
 from src.entities.digitalpin import DigitalPin
