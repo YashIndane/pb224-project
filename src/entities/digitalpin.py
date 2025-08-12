@@ -7,11 +7,11 @@ This module holds all the functionality to manage this pins.
 The pin mode is [GPIO.BCM]
 """
 
-from pydantic import BaseModel, field_validator
-from typing import Optional, Any
-
 import time
 import RPi.GPIO as GPIO
+
+from pydantic import BaseModel, field_validator
+from typing import Optional, Any
 
 
 class DigitalPin(BaseModel):

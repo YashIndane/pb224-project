@@ -6,6 +6,11 @@ PB224 RAM consists of 3 [MS62256A-20NC] 32K*8 High Speed CMOS Static RAMs
 which act as the main memory for this CPU.
 """
 
+from __future__ import annotations
+
+import threading
+import time
+
 from typing import (
     List,
     Dict,
@@ -24,8 +29,18 @@ from dataclasses import dataclass
 from termcolor import colored
 from tqdm import tqdm
 
-import threading
-import time
+
+logger = logging.getLogger(__name__)
+
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setFormatter(
+    logging.Formatter(
+        fmt="%(asctimes)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
+)
+
+logger.addHandler(handler)
 
 
 def checksum_status_pbar(func) -> Callable[..., str]:
@@ -189,6 +204,7 @@ class RAM_Interface:
             data_bin_string += ("0", "1")[SER_DATA.read_value()]
             time.sleep(.05)
 
+        logger.info(colored(f"address read: {hex_address}", "yellow"))
         return bin_to_hex(bin_data=data_bin_string)
 
 
@@ -222,7 +238,7 @@ class RAM_Interface:
                             hexString=(hex_address, hex_data)[inx]
                         )
                     },
-                    name=f"{'address_shifter_thread' if not inx else 'data_shifter_thread'}: {__file__}"
+                    name=f"{'address_shifter_thread' if not inx else 'data_shifter_thread'}: {__name__}"
                 )
             )
 
@@ -240,7 +256,7 @@ class RAM_Interface:
         RI.set_value(value=0)
         time.sleep(.05)
 
-        # print("data written")
+        logger.info(colored(f"data written: {hex_address}", "green"))
 
 
     @dump_intel_hexfile_pbar
@@ -273,6 +289,7 @@ class RAM_Interface:
 
             progress_bar.update(1)
 
+        logger.info(colored("INTEL HEX FILE DUMP SUCCESSFUL", "blue"))
         return address_checksum_mappings
 
 
@@ -316,6 +333,7 @@ class RAM_Interface:
 
             progress_bar.update(1)
 
+        logger.info("BULK READ SUCCESSFUL")
         return out_string
 
 
@@ -376,6 +394,7 @@ class RAM_Interface:
                self.checksum_notifier.set_value(value=x % 2)
                time.sleep(.5)
 
+        logger.info("CHECKSUM VERIFCATION DONE")
         return checksum_status_log
 
 

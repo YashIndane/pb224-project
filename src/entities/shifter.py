@@ -7,12 +7,14 @@ The Integrated Circuit used is a [74HC595] 8-Bit Shift Register
 with 3-State Outputs, in casacaded mode.
 """
 
+from __future__ import annotations
+
+import time
+
 from src.entities.digitalpin import DigitalPin
 from src.utilities.pb224_utilities import Hex
 from dataclasses import dataclass, field
 from typing import Optional, List
-
-import time
 
 
 @dataclass(kw_only=True)

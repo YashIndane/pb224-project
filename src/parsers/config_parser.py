@@ -2,12 +2,14 @@
 
 """Module to parse the pb224 assembler config file""""
 
-from src.entities.shifter import Shifter
-from src.entities.digitalpin import DigitalPin
-from src.ram import ram_operations
+from __future__ import annotations
 
 import RPi.GPIO as GPIO
 import yaml
+
+from src.entities.shifter import Shifter
+from src.entities.digitalpin import DigitalPin
+from src.ram import ram_operations
 
 
 def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:

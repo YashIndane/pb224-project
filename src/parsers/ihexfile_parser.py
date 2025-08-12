@@ -2,6 +2,8 @@
 
 """Module to parse the IntelHex File"""
 
+from __future__ import annotations
+
 from src.utilities.record import HexRecord
 from typing import List
 
