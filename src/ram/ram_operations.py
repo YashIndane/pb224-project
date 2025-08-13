@@ -32,16 +32,6 @@ from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-handler.setFormatter(
-    logging.Formatter(
-        fmt="%(asctimes)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-    )
-)
-
-logger.addHandler(handler)
-
 
 def checksum_status_pbar(func) -> Callable[..., str]:
     """Status bar decorator for checksum verification."""

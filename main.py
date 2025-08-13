@@ -1,24 +1,25 @@
 #!/usr/bin/python3
 
+import time
+import RPi.GPIO as GPIO
+import os
+
 from src.parser import ihexfile_parser
 from src.parser import config_parser
-from pathlib import Path
-
-import RPi.GPIO as GPIO
-import time
-import os
+from src.configs.logging_config import setup_logger
 
 
 if __name__ == "__main__":
     os.system("python3 --version")
+    setup_logger()
 
     # Parse pb224 config file
-    config_file_path = Path(__file__).parent / "../pb224_config.yaml"
+    config_file_path = "src/configs/pb224_config.yaml"
     ram_OP = config_parser.parse_config(conf_file=config_file_path)
     print(ram_OP)
 
     # Parse ihex file
-    ihex_file_path = Path(__file__).parent / "../ihexfile.hex"
+    ihex_file_path = "ihexfile.hex"
     hex_record_list = ihexfile_parser.parse_intel_hexfile(filename=ihex_file_path)
 
     # Dump intel hex file
