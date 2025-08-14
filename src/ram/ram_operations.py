@@ -18,7 +18,7 @@ from typing import (
     Union,
     ContextManager,
     Callable,
-    Optional
+    Optional,
 )
 
 from src.utilities.pb224_utilities import Hex, bin_to_hex, dec_to_hex
@@ -45,7 +45,7 @@ def checksum_status_pbar(func) -> Callable[..., str]:
             kwargs["progress_bar"] = pbar
             checksum_status_log = func(
                 otherSelf,
-                **kwargs
+                **kwargs,
             )
         return checksum_status_log
     return wrapper
@@ -60,17 +60,17 @@ def bulk_read_status_pbar(func) -> Callable[..., str]:
 
         l, u = RAM_Interface._get_addr_range(
             start_addr=l_addr,
-            end_addr=u_addr
+            end_addr=u_addr,
         )
 
         with tqdm(
             total=(Hex(hexString=u).hex_to_dec - Hex(hexString=l).hex_to_dec + 1),
-            desc="Bulk Read Status"
+            desc="Bulk Read Status",
         ) as pbar:
             kwargs["progress_bar"] = pbar
             bulk_read_status_log = func(
                 otherSelf,
-                **kwargs
+                **kwargs,
             )
         return bulk_read_status_log
     return wrapper
@@ -85,7 +85,7 @@ def dump_intel_hexfile_pbar(func) -> Callable[..., Dict[str, str]]:
             kwargs["progress_bar"] = pbar
             dump_log = func(
                 otherSelf,
-                **kwargs
+                **kwargs,
             )
         return dump_log
     return wrapper
@@ -150,7 +150,7 @@ class RAM_Interface:
 
         return (
             RAM_Interface._get_lower_addr(l_addr=start_addr),
-            RAM_Interface._get_higher_addr(h_addr=end_addr)
+            RAM_Interface._get_higher_addr(h_addr=end_addr),
         )
 
 
@@ -166,36 +166,41 @@ class RAM_Interface:
         RI, RI_CLK = self.W_Pins
         LD, R_CLK, SER_DATA = self.R_Pins
 
-        # RI disabled
-        RI.set_value(value=0)
+        try:
 
-        # RI_CLK disabled
-        # RI_CLK.set_value(value=0)
+            # RI disabled
+            RI.set_value(value=0)
+
+            # RI_CLK disabled
+            # RI_CLK.set_value(value=0)
 
 
-        # Set address
-        self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
+            # Set address
+            self.addr_shifter.shift(shiftHex=Hex(hexString=hex_address))
 
-        time.sleep(.05)
-
-        # Latch the RAM data in 74HC165
-        LD.trigger(transition="0")
-
-        time.sleep(.05)
-
-        # Shifting out and reading 3 bytes of data
-        data_bin_string = "0b"
-
-        data_bin_string += ("0", "1")[SER_DATA.read_value()]
-
-        for _ in range(23):
-            R_CLK.trigger(transition="1")
             time.sleep(.05)
+
+            # Latch the RAM data in 74HC165
+            LD.trigger(transition="0")
+
+            time.sleep(.05)
+
+            # Shifting out and reading 3 bytes of data
+            data_bin_string = "0b"
+
             data_bin_string += ("0", "1")[SER_DATA.read_value()]
-            time.sleep(.05)
 
-        logger.info(colored(f"address read: {hex_address}", "yellow"))
-        return bin_to_hex(bin_data=data_bin_string)
+            for _ in range(23):
+                R_CLK.trigger(transition="1")
+                time.sleep(.05)
+                data_bin_string += ("0", "1")[SER_DATA.read_value()]
+                time.sleep(.05)
+
+            logger.info(colored(f"address read: {hex_address}", "yellow"))
+            return bin_to_hex(bin_data=data_bin_string)
+
+        except Exception as e:
+            logger.info(e)
 
 
     def write_single_address(self, *, hex_address: str, hex_data: str) -> None:
@@ -213,40 +218,44 @@ class RAM_Interface:
         # Threads list
         threads_list: list[
             threading.Thread, # Address shifter thread
-            threading.Thread  # Data shifter thread
+            threading.Thread,  # Data shifter thread
         ] = []
 
-        # Populating threads list
-        for inx in range(2):
-            threads_list.append(threading
-                .Thread(
-                    target=(
-                        self.addr_shifter.shift, self.data_shifter.shift
-                    )[inx],
-                    kwargs={
-                        "shiftHex": Hex(
-                            hexString=(hex_address, hex_data)[inx]
-                        )
-                    },
-                    name=f"{'address_shifter_thread' if not inx else 'data_shifter_thread'}: {__name__}"
+        try:
+            # Populating threads list
+            for inx in range(2):
+                threads_list.append(threading
+                    .Thread(
+                        target=(
+                            self.addr_shifter.shift, self.data_shifter.shift
+                        )[inx],
+                        kwargs={
+                            "shiftHex": Hex(
+                                hexString=(hex_address, hex_data)[inx]
+                            )
+                        },
+                        name=f"{'address_shifter_thread' if not inx else 'data_shifter_thread'}: {__name__}",
+                    )
                 )
-            )
 
-        # Thread execution for shifting data & address parallelly
-        for c in range(2):
-            for thread in threads_list:
-                thread.start() if not c else thread.join()
+            # Thread execution for shifting data & address parallelly
+            for c in range(2):
+                for thread in threads_list:
+                    thread.start() if not c else thread.join()
 
-        # Writing
-        time.sleep(.05)
-        RI.set_value(value=1)
-        time.sleep(.05)
-        RI_CLK.trigger(transition="1")
-        time.sleep(.05)
-        RI.set_value(value=0)
-        time.sleep(.05)
+            # Writing
+            time.sleep(.05)
+            RI.set_value(value=1)
+            time.sleep(.05)
+            RI_CLK.trigger(transition="1")
+            time.sleep(.05)
+            RI.set_value(value=0)
+            time.sleep(.05)
 
-        logger.info(colored(f"data written: {hex_address}", "green"))
+            logger.info(colored(f"data written: {hex_address}", "green"))
+
+        except Exception as e:
+            logger.error(e)
 
 
     @dump_intel_hexfile_pbar
@@ -254,7 +263,7 @@ class RAM_Interface:
         self,
         *,
         record_list: List[HexRecord],
-        progress_bar: Union[ContextManager, None] = None
+        progress_bar: Union[ContextManager, None]=None,
     ) -> Dict[str, str]:
         """Writes the machine language in intel hex file to RAM.
 
@@ -289,7 +298,7 @@ class RAM_Interface:
         *,
         lower_addr: str,
         upper_addr: str,
-        progress_bar: Union[ContextManager, None]=None
+        progress_bar: Union[ContextManager, None]=None,
     ) -> str:
         """Prints the RAM/Memory contents in formatted manner for given address range.
         Example lower_addr: '0x0001'
@@ -346,7 +355,7 @@ class RAM_Interface:
         addr_checksum_mappings: Dict[str, str],
         byte_count: Optional[str]="0x03",
         record_type: Optional[str]="0x00",
-        progress_bar: Union[ContextManager, None]=None
+        progress_bar: Union[ContextManager, None]=None,
     ) -> str:
         """Verifies the checksum for addresses passed.
 
@@ -384,7 +393,7 @@ class RAM_Interface:
                self.checksum_notifier.set_value(value=x % 2)
                time.sleep(.5)
 
-        logger.info("CHECKSUM VERIFCATION DONE")
+        logger.info("CHECKSUM VERIFICATION DONE")
         return checksum_status_log
 
 

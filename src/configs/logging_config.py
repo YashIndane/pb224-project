@@ -11,7 +11,7 @@ def setup_logger() -> None:
         'formatters': {
             'standard': {
                 'format': "%(asctime)s %(levelname)s %(message)s",
-                'datefmt': "%Y-%m-%d %H:%M:%S"
+                'datefmt': "%Y-%m-%d %H:%M:%S",
             }
         },
         'handlers': {
@@ -19,14 +19,14 @@ def setup_logger() -> None:
                 'class': 'logging.StreamHandler',
                 'formatter': 'standard',
                 'level': 'INFO',
-            },
+            }
         },
         'loggers': {
             '': {
                 'handlers': ['console'],
                 'level': 'INFO',
                 'propagate': False,
-            },
+            }
         },
     }
 
