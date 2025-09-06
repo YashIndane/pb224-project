@@ -1,11 +1,15 @@
 #!/usr/bin/python3
 
+"""Module to parse the pb224 assembler config file"""
 
-from shifter import Shifter
-from digitalpin import DigitalPin
-import ram_operations
+from __future__ import annotations
+
 import RPi.GPIO as GPIO
 import yaml
+
+from src.entities.shifter import Shifter
+from src.entities.digitalpin import DigitalPin
+from src.ram import ram_operations
 
 
 def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
@@ -146,20 +150,14 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     CHE_BLI = DigitalPin(
         pinNo=ch_pin, mode=mode_selecter[ch_mode], initialValue=ch_initval
     )
-    #GPIO.setup(14, GPIO.OUT, initial=0)
-    #GPIO.output(14, 1)
-    #time.sleep(2)
-    #GPIO.output(14, 0)
 
-
-    # RAM Operations Object
-
+    # Ram Operations Object
     ram_OP = ram_operations.RAM_Interface(
         R_Pins=[RR_LATCH, RR_SHIFTCLK, RR_SER_DATAIN],
         W_Pins=[RW_RI, RW_RICLK],
         addr_shifter=address_shifter,
         data_shifter=data_shifter,
-        checksum_notifier=CHE_BLI
+        checksum_notifier=CHE_BLI,
     )
 
     return ram_OP
