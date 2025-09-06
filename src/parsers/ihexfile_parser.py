@@ -21,7 +21,7 @@ def parse_intel_hexfile(*, filename: str) -> List[HexRecord]:
         data = ihexfile.read()
         for record in data.split("\n"):
             dump_hex_records.append(
-                HexRecord(record)
+                HexRecord(record_string=record)
             )
         ihexfile.close()
 

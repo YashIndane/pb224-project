@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Module to parse the pb224 assembler config file""""
+"""Module to parse the pb224 assembler config file"""
 
 from __future__ import annotations
 

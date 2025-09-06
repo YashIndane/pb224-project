@@ -9,6 +9,7 @@ which act as the main memory for this CPU.
 from __future__ import annotations
 
 import threading
+import logging
 import time
 
 from typing import (
@@ -196,7 +197,7 @@ class RAM_Interface:
                 data_bin_string += ("0", "1")[SER_DATA.read_value()]
                 time.sleep(.05)
 
-            logger.info(colored(f"address read: {hex_address}", "yellow"))
+            #logger.info(colored(f"address read: {hex_address}", "yellow"))
             return bin_to_hex(bin_data=data_bin_string)
 
         except Exception as e:
@@ -217,7 +218,7 @@ class RAM_Interface:
 
         # Threads list
         threads_list: list[
-            threading.Thread, # Address shifter thread
+            threading.Thread,  # Address shifter thread
             threading.Thread,  # Data shifter thread
         ] = []
 
@@ -252,7 +253,7 @@ class RAM_Interface:
             RI.set_value(value=0)
             time.sleep(.05)
 
-            logger.info(colored(f"data written: {hex_address}", "green"))
+            #logger.info(colored(f"data written: {hex_address}", "green"))
 
         except Exception as e:
             logger.error(e)
