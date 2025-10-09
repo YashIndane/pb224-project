@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Module to setup logger"""
+# Module to setup logger
 
 import logging.config
 

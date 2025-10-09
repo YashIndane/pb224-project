@@ -6,7 +6,6 @@ from pydantic import BaseModel, field_validator
 class HexRecord(BaseModel):
     record_string: str
 
-    
     # Attribute validations
     @field_validator("record_string")
     @classmethod
@@ -15,7 +14,6 @@ class HexRecord(BaseModel):
             len(value) >= 0 #value[:3] == ":03"
         ), "`record_string` format wrong."
         return value
-
 
 
     @property

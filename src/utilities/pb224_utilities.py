@@ -12,8 +12,8 @@ def bin_to_hex(*, bin_data: str) -> str:
     """
 
     SCALE = 2
-    length = (len(bin_data) - 2) // 4
-    hex_data = "0x" + hex(int(bin_data, SCALE))[2:].zfill(length)
+    length: int = (len(bin_data) - 2) // 4
+    hex_data: str = "0x" + hex(int(bin_data, SCALE))[2:].zfill(length)
     return hex_data
 
 
@@ -26,7 +26,7 @@ def dec_to_hex(*, dec: int) -> str:
     :return: Hex representation of the decimal value (type string).
     """
 
-    hex_data = "0x" + hex(dec)[2:].zfill(4)
+    hex_data: str = "0x" + hex(dec)[2:].zfill(4)
     return hex_data
 
 
@@ -45,8 +45,8 @@ class Hex:
         """
 
         SCALE = 16
-        bit_length = 4 * (len(self.hexString) - 2)
-        bin_data = "0b" + bin(int(self.hexString, SCALE))[2:].zfill(bit_length)
+        bit_length: int = 4 * (len(self.hexString) - 2)
+        bin_data: str = "0b" + bin(int(self.hexString, SCALE))[2:].zfill(bit_length)
         return bin_data
 
 
@@ -71,9 +71,9 @@ class Hex:
         :return: Checksum value in hexadecimal (type string).
         """
 
-        record = self.hexString[2:]
+        record: str = self.hexString[2:]
 
-        half_record_len = len(record) // 2
+        half_record_len: int = len(record) // 2
         pairs_sum = 0
 
         for j in range(0, half_record_len):
@@ -83,7 +83,7 @@ class Hex:
         complement2s_LSB = hex(((LSB ^ 255) + 1) % 256)[2:]
 
         if len(complement2s_LSB) < 2:
-            complement2s_LSB = "0" + complement2s_LSB
+            complement2s_LSB: str = "0" + complement2s_LSB
 
         return "0x" + complement2s_LSB
 
