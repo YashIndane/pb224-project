@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-""""Module for managing the Shifters
+# Module for managing the Shifters
+#
+# Shifters are basically referring to data & address shifters.
+# The Integrated Circuit used is a [74HC595] 8-Bit Shift Register
+# with 3-State Outputs, in casacaded mode.
 
-Shifters are basically referring to data & address shifters.
-The Integrated Circuit used is a [74HC595] 8-Bit Shift Register
-with 3-State Outputs, in casacaded mode.
-"""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ class Shifter:
         :return: None.
         """
 
-        SRCLR = self.shifterDigitalPins[-1]
+        SRCLR: DigitalPin = self.shifterDigitalPins[-1]
         SRCLR.trigger(transition="0")
 
 
@@ -44,7 +44,7 @@ class Shifter:
 
         SER, SRCLK, RCLK = self.shifterDigitalPins[0:3]
         counter = 0
-        shift_num = shiftHex.hex_to_dec
+        shift_num: int = shiftHex.hex_to_dec
 
         while counter < shiftHex.bit_size:
             SER.set_value(value=shift_num % 2)

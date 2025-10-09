@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-"""Module for all DigitalPin management
+# Module for all DigitalPin management
+#
+# DigitalPins are the GPIO pins on the Raspberry Pi Zero 2W SBC.
+# This module holds all the functionality to manage this pins.
+# The pin mode is [GPIO.BCM]
 
-DigitalPins are the GPIO pins on the Raspberry Pi Zero 2W SBC.
-This module holds all the functionality to manage this pins.
-The pin mode is [GPIO.BCM]
-"""
 
 import time
 import RPi.GPIO as GPIO

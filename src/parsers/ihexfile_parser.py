@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Module to parse the IntelHex File"""
+# Module to parse the IntelHex File
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ def parse_intel_hexfile(*, filename: str) -> List[HexRecord]:
     dump_hex_records = []
 
     with open(file=filename, mode="r") as ihexfile:
-        data = ihexfile.read()
+        data: str = ihexfile.read()
         for record in data.split("\n"):
             dump_hex_records.append(
                 HexRecord(record_string=record)

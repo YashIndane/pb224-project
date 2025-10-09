@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 
-"""Module to parse the pb224 assembler config file"""
+# Module to parse the pb224 assembler config file
 
 from __future__ import annotations
 
 import RPi.GPIO as GPIO
 import yaml
 
+from typing import List
 from src.entities.shifter import Shifter
 from src.entities.digitalpin import DigitalPin
 from src.ram import ram_operations
@@ -30,7 +31,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
 
 
     # Parse data shifter profile
-    data_shifter_profile_pins = (
+    data_shifter_profile_pins: List = (
         configs["config"]["profiles"][0]["sipoShifterProfiles"][0]["dataShifterProfile"]["pins"]
     )
 
@@ -67,7 +68,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
 
 
     # Parse address shifter profile
-    addr_shifter_profile_pins = (
+    addr_shifter_profile_pins: List = (
         configs["config"]["profiles"][0]["sipoShifterProfiles"][1]["addressShifterProfile"]["pins"]
     )
 
@@ -104,7 +105,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
 
 
     # Parse RAM serial read profile
-    ram_serial_reader_profile_pins = (
+    ram_serial_reader_profile_pins: List = (
         configs["config"]["profiles"][1]["pisoShifterProfiles"][0]["ramSerialReaderProfile"]["pins"]
     )
 
@@ -128,7 +129,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
 
 
     # Parse RAM write profle
-    ram_write_profile_pins = configs["config"]["profiles"][2]["otherProfiles"][0]["ramWriteProfile"]["pins"]
+    ram_write_profile_pins: List = configs["config"]["profiles"][2]["otherProfiles"][0]["ramWriteProfile"]["pins"]
 
     # RW_RI
     rw_ri_pin, rw_ri_mode, rw_ri_initval = ram_write_profile_pins[0]["ramIn"].values()
@@ -143,7 +144,7 @@ def parse_config(*, conf_file: str) -> ram_operations.RAM_Interface:
     )
 
     # Checksum Blinker
-    checksum_blinker_profile = configs["config"]["profiles"][2]["otherProfiles"][1]["checkSumBlinker"]["pins"]
+    checksum_blinker_profile: List = configs["config"]["profiles"][2]["otherProfiles"][1]["checkSumBlinker"]["pins"]
 
     # CHE_BLI
     ch_pin, ch_mode, ch_initval = checksum_blinker_profile[0]["notify"].values()
