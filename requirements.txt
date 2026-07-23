@@ -1,0 +1,5 @@
+tqdm
+termcolor
+pydantic
+pyyaml
+RPi.GPIO
